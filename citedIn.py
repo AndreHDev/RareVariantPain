@@ -2,8 +2,6 @@ from APIs.PubMedAPI import *
 import datetime
 import os
 
-#from BibTexAPI import *
-
 # all scores from paper
 score_pmids = [
     "38183205", "30371827", "24487276", "33618777", "25338716", "26727659",
@@ -64,6 +62,7 @@ def get_citing_papers_matching_pain(pmids, query):
     print(f"Writing results to {results_path}")
 
     with open(results_path, "w", encoding="utf-8") as f:
+        # Write initial info to the file
         print("Getting papers that cite given PMIDS and maching query.", file=f)
         print(f"Query: {query}", file=f)
         print(f"PMIDs to check: {pmids}", file=f)
@@ -73,6 +72,7 @@ def get_citing_papers_matching_pain(pmids, query):
         matching_counts = []
 
         for pmid in pmids:
+            # For every PMID, get the papers that cite it
             print(f"Processing PMID {pmid}...")
             citing_pmids = get_citing_pmids(pmid)
 
@@ -82,13 +82,14 @@ def get_citing_papers_matching_pain(pmids, query):
                 matching_counts.append(0)
                 continue
 
-            # Build query like manual PubMed search
+            # Build query to filter citing papers with pain query
             combined_query = query + " AND " + "(" + " ".join(citing_pmids) + ")"
             # Remove newlines for PubMed search
             combined_query = combined_query.replace("\n", "")  
-
+            # Search PubMed with the combined query to find citing papers that match the pain query
             match_pmids = search_pubmed(combined_query)
-
+            
+            # Write results
             print(f"PMID {pmid}:", file=f)
             print(f"  Citing papers found: {len(citing_pmids)}", file=f)
             print(f"  Amount of citing papers matching pain query: {len(match_pmids)}", file=f)
@@ -101,14 +102,12 @@ def get_citing_papers_matching_pain(pmids, query):
         print(f"Citing papers found: {' '.join(map(str, citing_counts))}", file=f)
         print(f"Matching pain query: {' '.join(map(str, matching_counts))}", file=f)
 
-        # Collect all PMIDs into a single set to remove duplicates
+        # Collect all found pain PMIDs into a single set to remove duplicates. Makes manual review easier.
         all_pmids = set()
         for match_pmids in all_citing_matching_pain.values():
             all_pmids.update(match_pmids)  # add all PMIDs from the set
-
         # Join into a simple string with spaces
         all_pmids_str = " ".join(all_pmids)
-
         # Write to file
         print("All unique PMIDs from citing papers matching pain query:", file=f)
         f.write(all_pmids_str + "\n")

@@ -59,11 +59,26 @@ def _request_with_retries(method, url, api_key=None, max_attempts=20, **kwargs):
             raise
 
 
-# Search pubmed with a general querry
 @txt_cache()
-def search_pubmed(query, retmax=500, api_key=None):
+def search_pubmed(query, api_key=None):
+    """
+    Standart pubmed search. Searches PubMed for papers matching the given query.
+    
+    Args:
+        query: Search query string
+        api_key: Optional NCBI API key for faster requests
+        
+    Returns:
+        List of PubMed IDs matching the query
+        
+    Raises:
+        Exception: If results is capped by the PubMed API return maximum of 500
+    """
     api_key = api_key or API_KEY
 
+    # Maximum number of results returnable by PubMed API
+    retmax=500
+    
     url = BASE_URL
     params = {
         "db": "pubmed",
@@ -85,6 +100,16 @@ def search_pubmed(query, retmax=500, api_key=None):
 
 # Papers given paper cites
 def get_references_from_pmid(pmid, api_key=None):
+    """
+    Fetches PubMed IDs of papers referenced by the given paper.
+    
+    Args:
+        pmid: PubMed ID of the paper to find references for
+        api_key: Optional NCBI API key for faster requests
+        
+    Returns:
+        Set of PubMed IDs referenced by the given paper
+    """
     api_key = api_key or API_KEY
 
     params = {
@@ -112,6 +137,16 @@ def get_references_from_pmid(pmid, api_key=None):
 # Papers that cite given paper
 @txt_cache()
 def get_citing_pmids(pmid, api_key=None):
+    """
+    Fetches PubMed IDs of papers that cite the given paper.
+    
+    Args:
+        pmid: PubMed ID of the paper to find citations for
+        api_key: Optional NCBI API key for faster requests
+        
+    Returns:
+        List of PubMed IDs citing the given paper
+    """
     api_key = api_key or API_KEY
 
     params = {
