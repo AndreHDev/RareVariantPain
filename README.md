@@ -1,4 +1,4 @@
-# Rare variants in the general population as a bioinformatic gateway to pain genetics and analgesic drug discovery - Code
+# Code for: Rare variants in the general population as a bioinformatic gateway to pain genetics and analgesic drug discovery
 
 This contains R and Python code for finding pain relevant papers in rare variant analysis and identifying clinically approved drugs targeting pain-related genes through OMIM-DrugBank integration.
 
