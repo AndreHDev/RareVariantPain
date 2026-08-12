@@ -1,6 +1,6 @@
 /venv
 temp.py
 __pycache__/
-APIs/cache.txt
+Pubmed/APIs/cache.txt
 Results/
-APIs/API_key.txt
+Pubmed/APIs/API_key.txt

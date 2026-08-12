@@ -4,7 +4,7 @@ import functools
 import json
 import hashlib
 
-CACHE_FILE = "APIs/cache.txt"
+CACHE_FILE = os.path.join(os.path.dirname(__file__), "cache.txt")
 
 def txt_cache(cache_file = CACHE_FILE):
 
